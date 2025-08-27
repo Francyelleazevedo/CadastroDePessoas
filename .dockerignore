@@ -1,0 +1,59 @@
+# Build artifacts
+**/bin/
+**/obj/
+**/out/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio files
+.vs/
+*.vscode/
+
+# Git
+.git/
+.gitignore
+
+# Node modules (if copying frontend accidentally)
+**/node_modules/
+**/dist/
+**/build/
+
+# Test results
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Render specific
+.render/
+
+# Environment files that might contain secrets
+.env
+.env.local
+.env.production
+.env.staging
+
+cadastro-de-pessoas-web/
+bin/
+obj/
+*.log

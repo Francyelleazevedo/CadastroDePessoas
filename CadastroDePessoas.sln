@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{31F3E7B9-2F52-4638-807F-9D4BA4C525AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CadastroDePessoas.Application", "CadastroDePessoas.Application\CadastroDePessoas.Application.csproj", "{6A499854-E592-4F9D-8022-B9D966338B29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CadastroDePessoas.Domain", "CadastroDePessoas.Domain\CadastroDePessoas.Domain.csproj", "{5BCDBD48-E29A-4C68-B894-E6349EB8111C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CadastroDePessoas.Infra", "CadastroDePessoas.Infra\CadastroDePessoas.Infra.csproj", "{120DB69B-FA01-42FC-B00B-A5AE27D425D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CadastroDePessoas.Infra.IoC", "CadastroDePessoas.Infra.IoC\CadastroDePessoas.Infra.IoC.csproj", "{D0DB7D43-E5F1-46C6-A458-FC89D62BE4A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CadastroDePessoas.API", "CadastroDePessoas.API\CadastroDePessoas.API.csproj", "{918D34A3-CA45-46E8-8F5E-F04B0DF50AC2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A499854-E592-4F9D-8022-B9D966338B29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A499854-E592-4F9D-8022-B9D966338B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A499854-E592-4F9D-8022-B9D966338B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A499854-E592-4F9D-8022-B9D966338B29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BCDBD48-E29A-4C68-B894-E6349EB8111C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BCDBD48-E29A-4C68-B894-E6349EB8111C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BCDBD48-E29A-4C68-B894-E6349EB8111C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BCDBD48-E29A-4C68-B894-E6349EB8111C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{120DB69B-FA01-42FC-B00B-A5AE27D425D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{120DB69B-FA01-42FC-B00B-A5AE27D425D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{120DB69B-FA01-42FC-B00B-A5AE27D425D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{120DB69B-FA01-42FC-B00B-A5AE27D425D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0DB7D43-E5F1-46C6-A458-FC89D62BE4A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0DB7D43-E5F1-46C6-A458-FC89D62BE4A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0DB7D43-E5F1-46C6-A458-FC89D62BE4A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0DB7D43-E5F1-46C6-A458-FC89D62BE4A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{918D34A3-CA45-46E8-8F5E-F04B0DF50AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{918D34A3-CA45-46E8-8F5E-F04B0DF50AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{918D34A3-CA45-46E8-8F5E-F04B0DF50AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{918D34A3-CA45-46E8-8F5E-F04B0DF50AC2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6A499854-E592-4F9D-8022-B9D966338B29} = {31F3E7B9-2F52-4638-807F-9D4BA4C525AF}
+		{5BCDBD48-E29A-4C68-B894-E6349EB8111C} = {31F3E7B9-2F52-4638-807F-9D4BA4C525AF}
+		{120DB69B-FA01-42FC-B00B-A5AE27D425D3} = {31F3E7B9-2F52-4638-807F-9D4BA4C525AF}
+		{D0DB7D43-E5F1-46C6-A458-FC89D62BE4A1} = {31F3E7B9-2F52-4638-807F-9D4BA4C525AF}
+	EndGlobalSection
+EndGlobal
