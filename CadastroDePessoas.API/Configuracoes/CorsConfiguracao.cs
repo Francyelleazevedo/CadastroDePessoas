@@ -43,7 +43,7 @@
                 // Política específica para produção com configurações mais restritivas
                 options.AddPolicy("Production", builder =>
                 {
-                    builder.WithOrigins("https://cadastro-de-pessoas-web.onrender.com")
+                    builder.WithOrigins("https://cadastrodepessoas-web.onrender.com")
                            .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                            .WithHeaders("Content-Type", "Authorization", "X-Requested-With")
                            .AllowCredentials()
