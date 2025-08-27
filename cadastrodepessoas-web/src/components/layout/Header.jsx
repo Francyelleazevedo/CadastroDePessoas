@@ -23,7 +23,6 @@ const Header = ({ onOpenSidebar }) => {
     const shadow = useColorModeValue('sm', 'sm-dark');
     const navigate = useNavigate();
 
-    // Pega usuário logado do localStorage
     let user = null;
     try {
         user = JSON.parse(localStorage.getItem('user'));
@@ -40,7 +39,6 @@ const Header = ({ onOpenSidebar }) => {
         <Box as="header" bg={bg} boxShadow={shadow} w="full">
             <Flex align="center" justify="space-between" px={6} py={4}>
                 <HStack spacing={4}>
-                    {/* Botão de menu para mobile */}
                     <IconButton
                         display={{ base: 'inline-flex', md: 'none' }}
                         aria-label="Abrir menu"
@@ -54,7 +52,6 @@ const Header = ({ onOpenSidebar }) => {
                     </Text>
                 </HStack>
                 <HStack spacing={4}>
-                    {/* Menu de perfil */}
                     <Menu>
                         <MenuButton as={Box} p={0} borderRadius="full" _focus={{ boxShadow: 'none' }} cursor="pointer">
                             <Avatar size="md" bgGradient="linear(to-br, blue.400, purple.500)" icon={<FaUser fontSize="1.2rem" color="white" />} />

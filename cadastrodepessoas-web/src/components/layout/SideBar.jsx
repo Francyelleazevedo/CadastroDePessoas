@@ -76,13 +76,10 @@ const SideBar = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
     const location = useLocation();
     
-    // Estado para controlar se o sidebar está colapsado
     const [isCollapsed, setIsCollapsed] = React.useState(false);
     
-    // Estado para controlar qual menu está aberto
     const [openMenu, setOpenMenu] = React.useState(null);
 
-    // Verificar se é mobile
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     const handleLogout = async (e) => {
@@ -91,7 +88,6 @@ const SideBar = ({ isOpen, onClose }) => {
         navigate('/login');
     };
 
-    // Pega usuário logado do localStorage
     let user = null;
     try {
         user = JSON.parse(localStorage.getItem('user'));
@@ -100,7 +96,6 @@ const SideBar = ({ isOpen, onClose }) => {
     const nome = user?.nome || user?.name || 'Usuário';
     const email = user?.email || 'sem-email';
 
-    // Função para verificar se um item está ativo
     const isItemActive = (href, hasChildren) => {
         if (hasChildren) return false;
         return location.pathname === href;
@@ -111,7 +106,7 @@ const SideBar = ({ isOpen, onClose }) => {
             setOpenMenu(openMenu === idx ? null : idx);
         } else if (href && href !== '#') {
             navigate(href);
-            // Fechar sidebar mobile após navegação
+
             if (isMobile && onClose) {
                 onClose();
             }
@@ -121,7 +116,7 @@ const SideBar = ({ isOpen, onClose }) => {
     const handleChildClick = (href) => {
         if (href && href !== '#') {
             navigate(href);
-            // Fechar sidebar mobile após navegação
+
             if (isMobile && onClose) {
                 onClose();
             }
@@ -132,10 +127,8 @@ const SideBar = ({ isOpen, onClose }) => {
         setIsCollapsed(!isCollapsed);
     };
 
-    // Conteúdo do sidebar
     const sidebarContent = (
         <>
-            {/* Logo/Header */}
             <Flex 
                 align="center" 
                 justify={isCollapsed ? "center" : "space-between"} 
@@ -162,7 +155,6 @@ const SideBar = ({ isOpen, onClose }) => {
             </Flex>
 
             <VStack align="stretch" spacing={4} p={isCollapsed ? 2 : 4}>
-                {/* Menu */}
                 <VStack align="stretch" spacing={1}>
                     {menuItems.map((item, idx) => {
                         const isActive = isItemActive(item.href, !!item.children);
@@ -230,7 +222,6 @@ const SideBar = ({ isOpen, onClose }) => {
                     })}
                 </VStack>
 
-                {/* Logout button */}
                 <Divider />
                 <Button
                     leftIcon={<FaSignOutAlt />}
@@ -247,7 +238,6 @@ const SideBar = ({ isOpen, onClose }) => {
         </>
     );
 
-    // Mobile: Render como Drawer
     if (isMobile) {
         return (
             <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
@@ -262,7 +252,6 @@ const SideBar = ({ isOpen, onClose }) => {
         );
     }
 
-    // Desktop: Render como sidebar normal
     return (
         <Box
             as="nav"

@@ -53,7 +53,7 @@ namespace CadastroDePessoas.Application.CQRS.Comandos.Pessoa.AtualizarPessoa
 
             await pessoaRepositorio.AtualizarPessoaComEnderecoAsync(pessoa);
 
-            await servicoCache.RemoverAsync("pessoas_lista");
+            await servicoCache.RemoverAsync("lista_pessoas");
             await servicoCache.RemoverAsync($"pessoa_{comando.Id}");
 
             return PessoaFactory.CriarDTO(pessoa);

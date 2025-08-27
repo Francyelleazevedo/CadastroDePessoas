@@ -26,7 +26,6 @@ export default function CriarPessoa() {
     const [isLoading, setIsLoading] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    // Criar pessoa
     const handleSubmit = async (pessoaData) => {
         setIsLoading(true);
         try {
@@ -52,7 +51,6 @@ export default function CriarPessoa() {
                 <Header onOpenSidebar={onOpen} />
                 <Box as="main" p={6} bg={bgMain}>
                     <VStack align="stretch" spacing={6} maxW="800px" mx="auto">
-                        {/* Cabeçalho da página */}
                         <Flex justify="space-between" align="center">
                             <Box>
                                 <Text fontSize="2xl" fontWeight="bold" color="gray.700">

@@ -131,7 +131,6 @@ export default function EditarPessoa() {
                 <Header onOpenSidebar={onOpen} />
                 <Box as="main" p={6} bg={bgMain}>
                     <VStack align="stretch" spacing={6} maxW="800px" mx="auto">
-                        {/* Cabeçalho da página */}
                         <Flex justify="space-between" align="center">
                             <Box>
                                 <Text fontSize="2xl" fontWeight="bold" color="gray.700">

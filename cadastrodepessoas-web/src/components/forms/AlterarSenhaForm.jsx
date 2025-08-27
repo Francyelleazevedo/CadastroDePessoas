@@ -40,10 +40,10 @@ const schema = yup.object().shape({
         .oneOf([yup.ref('novaSenha')], 'As senhas não coincidem'),
 });
 
-export default function AlterarSenhaForm({ 
-    showTitle = true, 
+export default function AlterarSenhaForm({
+    showTitle = true,
     onSuccess,
-    cardStyle = true 
+    cardStyle = true
 }) {
     const { showSuccess, showError } = useNotification();
     const [showPasswords, setShowPasswords] = useState({
@@ -78,18 +78,17 @@ export default function AlterarSenhaForm({
             });
 
             reset();
-            
+
             if (onSuccess) {
                 onSuccess();
             }
         } catch (error) {
-            console.error('Erro ao alterar senha:', error);
-            
+            console.error('Erro ao alterar senha:', error); 
             let errorMessage = 'Não foi possível alterar a senha. Tente novamente.';
             if (error.response?.data?.message) {
                 errorMessage = error.response.data.message;
             }
-            
+
             showError(errorMessage);
         }
     };
@@ -120,7 +119,6 @@ export default function AlterarSenhaForm({
                     </Box>
                 )}
 
-                {/* Senha Atual */}
                 <FormControl isInvalid={!!errors.senhaAtual}>
                     <FormLabel>Senha Atual</FormLabel>
                     <InputGroup>
@@ -145,7 +143,6 @@ export default function AlterarSenhaForm({
                     <FormErrorMessage>{errors.senhaAtual?.message}</FormErrorMessage>
                 </FormControl>
 
-                {/* Nova Senha */}
                 <FormControl isInvalid={!!errors.novaSenha}>
                     <FormLabel>Nova Senha</FormLabel>
                     <InputGroup>
@@ -170,7 +167,6 @@ export default function AlterarSenhaForm({
                     <FormErrorMessage>{errors.novaSenha?.message}</FormErrorMessage>
                 </FormControl>
 
-                {/* Confirmar Senha */}
                 <FormControl isInvalid={!!errors.confirmarSenha}>
                     <FormLabel>Confirmar Nova Senha</FormLabel>
                     <InputGroup>

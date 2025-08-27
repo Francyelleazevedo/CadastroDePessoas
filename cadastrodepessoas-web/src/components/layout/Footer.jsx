@@ -7,7 +7,6 @@ const Footer = () => {
 	const color = useColorModeValue('gray.600', 'gray.400');
 	const location = useLocation();
 	
-	// Lista de rotas onde o footer NÃO deve aparecer
 	const routesWithoutFooter = [
 		'/login',
 		'/registrar',
@@ -16,7 +15,6 @@ const Footer = () => {
 		'/erro-conexao'
 	];
 	
-	// Se a rota atual está na lista de exclusão, não renderiza o footer
 	if (routesWithoutFooter.includes(location.pathname)) {
 		return null;
 	}

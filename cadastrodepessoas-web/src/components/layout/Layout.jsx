@@ -22,7 +22,6 @@ const Layout = () => {
                     transition="margin-left 0.3s cubic-bezier(.08,.52,.52,1)"
                     minH="calc(100vh - 72px)"
                 >
-                    {/* Overlay para mobile quando sidebar está aberta */}
                     {isOpen && (
                         <Box
                             position="fixed"
@@ -37,7 +36,6 @@ const Layout = () => {
                         />
                     )}
 
-                    {/* Conteúdo principal com padding adequado */}
                     <Box
                         minH="calc(100vh - 72px)"
                         bg="white"

@@ -37,27 +37,25 @@ export default function Dashboard() {
     const [loading, setLoading] = React.useState(true);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    // Busca lista de pessoas e calcula os dados do dashboard
     const fetchStats = React.useCallback(async () => {
         setLoading(true);
         try {
             const pessoas = await pessoaService.listar();
-            // Total de pessoas
+
             const totalPessoas = pessoas.length;
-            // Novos cadastros nos últimos 30 dias
+
             const trintaDiasAtras = new Date();
             trintaDiasAtras.setDate(trintaDiasAtras.getDate() - 30);
             const novosCadastros = pessoas.filter(p => new Date(p.DataCadastro) >= trintaDiasAtras).length;
-            // Distribuição por sexo
+
             let masculino = 0, feminino = 0, naoInformado = 0;
-            // Idade média
+           
             let somaIdades = 0, totalComIdade = 0;
             pessoas.forEach(p => {
                 if (p.Sexo === 1) masculino++;
                 else if (p.Sexo === 2) feminino++;
                 else naoInformado++;
-                
-                // Calcula idade a partir da data de nascimento
+             
                 const idade = calcularIdade(p.DataNascimento);
                 if (idade !== null && !isNaN(idade)) {
                     somaIdades += idade;
@@ -72,7 +70,6 @@ export default function Dashboard() {
                 sexo: { masculino, feminino, naoInformado },
             });
         } catch (e) {
-            // fallback: mantém stats antigos
         } finally {
             setLoading(false);
         }
@@ -84,7 +81,6 @@ export default function Dashboard() {
 
     useDashboardAutoRefresh(fetchStats, 10000);
 
-    // Dados do gráfico de sexo
     const pieData = {
         labels: ['Feminino', 'Masculino', 'Não informado'],
         datasets: [
@@ -100,7 +96,6 @@ export default function Dashboard() {
         ],
     };
 
-    // Cards
     const cards = [
         {
             label: 'Total de Pessoas',
@@ -140,7 +135,7 @@ export default function Dashboard() {
             <Flex direction="column" flex={1}>
                 <Header onOpenSidebar={onOpen} />
                 <Box as="main" p={6} bg={bgMain}>
-                    {/* Cards de resumo */}
+
                     <Grid
                         templateColumns={{
                             base: '1fr',
@@ -194,7 +189,6 @@ export default function Dashboard() {
                         ))}
                     </Grid>
 
-                    {/* Gráfico de pizza em linha separada */}
                     <Box
                         bg="white"
                         rounded="lg"

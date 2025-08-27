@@ -41,7 +41,7 @@ export default function MeuPerfil() {
     const navigate = useNavigate();
     const { showSuccess, showError } = useNotification();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    
+
     const [usuario, setUsuario] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -126,7 +126,6 @@ export default function MeuPerfil() {
                 <Header onOpenSidebar={onOpen} />
                 <Box as="main" p={6} bg={bgMain}>
                     <VStack align="stretch" spacing={6} maxW="800px" mx="auto">
-                        {/* Cabeçalho */}
                         <Flex justify="space-between" align="center">
                             <Box>
                                 <Text fontSize="2xl" fontWeight="bold" color="gray.700">
@@ -145,7 +144,6 @@ export default function MeuPerfil() {
                             </Button>
                         </Flex>
 
-                        {/* Tabs */}
                         <HStack spacing={4} bg={bgCard} p={1} borderRadius="lg">
                             <Button
                                 variant={activeTab === 'perfil' ? 'solid' : 'ghost'}
@@ -167,7 +165,6 @@ export default function MeuPerfil() {
                             </Button>
                         </HStack>
 
-                        {/* Conteúdo das Tabs */}
                         {activeTab === 'perfil' && (
                             <Card bg={bgCard}>
                                 <CardHeader>
@@ -175,7 +172,6 @@ export default function MeuPerfil() {
                                 </CardHeader>
                                 <CardBody>
                                     <VStack spacing={6}>
-                                        {/* Avatar e Info Principal */}
                                         <HStack spacing={6} align="start" w="full">
                                             <Avatar
                                                 size="xl"
@@ -201,7 +197,6 @@ export default function MeuPerfil() {
 
                                         <Divider />
 
-                                        {/* Detalhes */}
                                         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} w="full">
                                             <VStack align="start" spacing={3}>
                                                 <HStack>
@@ -257,7 +252,7 @@ export default function MeuPerfil() {
                         )}
 
                         {activeTab === 'senha' && (
-                            <AlterarSenhaForm 
+                            <AlterarSenhaForm
                                 onSuccess={handlePasswordSuccess}
                                 cardStyle={true}
                             />

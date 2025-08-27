@@ -290,7 +290,6 @@ export default function ListarPessoas() {
                 </Box>
             </Flex>
 
-            {/* Modal de Confirmação de Exclusão */}
             <ConfirmarExclusaoModal
                 isOpen={isOpen}
                 onClose={handleCloseDeleteModal}

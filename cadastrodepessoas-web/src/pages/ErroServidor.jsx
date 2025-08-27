@@ -42,7 +42,6 @@ export default function ErroServidor() {
                 >
                     <Box p={8}>
                         <VStack spacing={6}>
-                            {/* Número do erro */}
                             <Heading 
                                 as="h1" 
                                 size="4xl" 
@@ -53,7 +52,6 @@ export default function ErroServidor() {
                                 500
                             </Heading>
 
-                            {/* Ícone */}
                             <Flex 
                                 w="20" 
                                 h="20" 
@@ -69,18 +67,15 @@ export default function ErroServidor() {
                                 <FaExclamationTriangle color="#2d3748" size={32} />
                             </Flex>
 
-                            {/* Título */}
                             <Heading as="h2" size="lg" color="gray.800" mb={2}>
                                 Erro do Servidor
                             </Heading>
 
-                            {/* Descrição */}
                             <Text color="gray.600" mb={6} px={4}>
                                 Erro interno ao buscar pessoa. Nossa equipe foi notificada e está 
                                 trabalhando para resolver o problema. Por favor, tente novamente mais tarde.
                             </Text>
 
-                            {/* Botões */}
                             <VStack w="100%" spacing={3}>
                                 <Button
                                     leftIcon={<FaHome />}

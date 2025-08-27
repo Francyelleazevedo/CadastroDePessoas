@@ -47,13 +47,10 @@ export default function DetalharPessoa() {
     const { showError } = useNotification();
     const { id } = useParams();
 
-    // Padrão CriarPessoa: não usar overflow em Flex externo, só no main
-    // Remover scroll duplo e footer flutuante
     const [isLoading, setIsLoading] = useState(true);
     const [pessoa, setPessoa] = useState(null);
     const [error, setError] = useState(null);
 
-    // Carregar dados da pessoa
     useEffect(() => {
         const carregarPessoa = async () => {
             try {
@@ -75,17 +72,14 @@ export default function DetalharPessoa() {
         }
     }, [id, showError]);
 
-    // Voltar para listagem
     const handleVoltar = () => {
         navigate('/pessoas');
     };
 
-    // Ir para edição
     const handleEditar = () => {
         navigate(`/pessoas/editar/${id}`);
     };
 
-    // Loading inicial
     if (isLoading) {
         return (
             <Flex>
@@ -103,7 +97,6 @@ export default function DetalharPessoa() {
         );
     }
 
-    // Erro ao carregar
     if (error) {
         return (
             <Flex>
@@ -143,7 +136,6 @@ export default function DetalharPessoa() {
                 <Header />
                 <Box as="main" p={6} bg={bgMain}>
                     <VStack align="stretch" spacing={6} maxW="1000px" mx="auto">
-                        {/* Cabeçalho da página */}
                         <Flex justify="space-between" align="center">
                             <Box>
                                 <Text fontSize="2xl" fontWeight="bold" color="gray.700">
@@ -171,9 +163,7 @@ export default function DetalharPessoa() {
                             </HStack>
                         </Flex>
 
-                        {/* Cards de informações */}
                         <Grid templateColumns={{ base: "1fr", lg: "2fr 1fr" }} gap={6}>
-                            {/* Informações Pessoais */}
                             <GridItem>
                                 <Card bg={bgCard} shadow="md">
                                     <CardBody>
@@ -187,7 +177,7 @@ export default function DetalharPessoa() {
                                                 </Text>
                                             </Flex>
                                             <Divider />
-                                            
+
                                             <HStack spacing={4}>
                                                 <FaUser color="gray" />
                                                 <Box>
@@ -289,7 +279,6 @@ export default function DetalharPessoa() {
                                 </Card>
                             </GridItem>
 
-                            {/* Endereço */}
                             <GridItem>
                                 <Card bg={bgCard} shadow="md">
                                     <CardBody>
@@ -303,7 +292,7 @@ export default function DetalharPessoa() {
                                                 </Text>
                                             </Flex>
                                             <Divider />
-                                            
+
                                             {pessoa?.Endereco ? (
                                                 <VStack align="stretch" spacing={3}>
                                                     <Box>
@@ -314,7 +303,7 @@ export default function DetalharPessoa() {
                                                             {pessoa.Endereco.Logradouro || 'N/A'}
                                                         </Text>
                                                     </Box>
-                                                    
+
                                                     <Box>
                                                         <Text fontSize="sm" color="gray.500" fontWeight="medium">
                                                             Número
@@ -323,7 +312,7 @@ export default function DetalharPessoa() {
                                                             {pessoa.Endereco.Numero || 'N/A'}
                                                         </Text>
                                                     </Box>
-                                                    
+
                                                     <Box>
                                                         <Text fontSize="sm" color="gray.500" fontWeight="medium">
                                                             Complemento
@@ -332,7 +321,7 @@ export default function DetalharPessoa() {
                                                             {pessoa.Endereco.Complemento || 'N/A'}
                                                         </Text>
                                                     </Box>
-                                                    
+
                                                     <Box>
                                                         <Text fontSize="sm" color="gray.500" fontWeight="medium">
                                                             Bairro
@@ -341,7 +330,7 @@ export default function DetalharPessoa() {
                                                             {pessoa.Endereco.Bairro || 'N/A'}
                                                         </Text>
                                                     </Box>
-                                                    
+
                                                     <Box>
                                                         <Text fontSize="sm" color="gray.500" fontWeight="medium">
                                                             Cidade
@@ -350,7 +339,7 @@ export default function DetalharPessoa() {
                                                             {pessoa.Endereco.Cidade || 'N/A'}
                                                         </Text>
                                                     </Box>
-                                                    
+
                                                     <Box>
                                                         <Text fontSize="sm" color="gray.500" fontWeight="medium">
                                                             Estado
@@ -359,7 +348,7 @@ export default function DetalharPessoa() {
                                                             {pessoa.Endereco.Estado || 'N/A'}
                                                         </Text>
                                                     </Box>
-                                                    
+
                                                     <Box>
                                                         <Text fontSize="sm" color="gray.500" fontWeight="medium">
                                                             CEP
