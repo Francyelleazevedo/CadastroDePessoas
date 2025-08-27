@@ -1,4 +1,2 @@
-#!/bin/bash
-# Script de build para Render.com
-npm ci --only=production
+npm install
 npm run build
