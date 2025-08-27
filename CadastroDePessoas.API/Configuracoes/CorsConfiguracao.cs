@@ -14,7 +14,7 @@
                     "https://localhost:3000",
                     "http://localhost:3001",
                     "https://localhost:3001",
-                    "https://cadastro-de-pessoas-web.onrender.com"
+                    "https://cadastrodepessoas-web.onrender.com"
                 ];
             }
 

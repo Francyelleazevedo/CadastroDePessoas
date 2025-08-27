@@ -50,7 +50,7 @@ namespace CadastroDePessoas.API.Middlewares
 
             response.Headers.Append("Content-Security-Policy",
                 "default-src 'self'; " +
-                "connect-src 'self' http://localhost:* https://localhost:* https://cadastro-de-pessoas-web.onrender.com; " +
+                "connect-src 'self' http://localhost:* https://localhost:* https://cadastrodepessoas-web.onrender.com; " +
                 "img-src 'self' data:; " +
                 "style-src 'self' 'unsafe-inline'; " +
                 "script-src 'self' 'unsafe-inline' 'unsafe-eval';");
@@ -94,7 +94,7 @@ namespace CadastroDePessoas.API.Middlewares
 
             var origensPermitidas = new[]
             {
-                "https://cadastro-de-pessoas-web.onrender.com",
+                "https://cadastrodepessoas-web.onrender.com",
                 "http://localhost:3001",
                 "https://localhost:3001",
                 "http://localhost:3000",
