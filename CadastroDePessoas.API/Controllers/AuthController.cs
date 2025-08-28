@@ -14,7 +14,7 @@ namespace CadastroDePessoas.API.Controllers
     [ApiController]
     [Route("api/v1/[controller]")]
     public class AuthController(IMediator mediator, AppDbContexto dbContext) : ControllerBase
-    {   
+    {
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<ActionResult<object>> Login([FromBody] AutenticarUsuarioComando loginDto)
@@ -22,7 +22,7 @@ namespace CadastroDePessoas.API.Controllers
             try
             {
                 var token = await mediator.Send(loginDto);
-                
+
                 var usuario = await dbContext.Usuarios
                     .Where(u => u.Email == loginDto.Email)
                     .Select(u => new
@@ -64,7 +64,7 @@ namespace CadastroDePessoas.API.Controllers
                 });
             }
         }
- 
+
         [HttpPost("registrar")]
         [AllowAnonymous]
         public async Task<ActionResult<object>> Registrar([FromBody] CriarUsuarioComando criarUsuarioDto)
@@ -73,8 +73,8 @@ namespace CadastroDePessoas.API.Controllers
             {
                 var sucesso = await mediator.Send(criarUsuarioDto);
 
-                return Ok(new 
-                { 
+                return Ok(new
+                {
                     success = sucesso,
                     message = "Usuário criado com sucesso",
                     user = new
@@ -99,7 +99,7 @@ namespace CadastroDePessoas.API.Controllers
         public async Task<ActionResult<object>> ObterPerfil()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
-            
+
             if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var userGuid))
             {
                 return BadRequest(new { message = "Token inválido" });
@@ -140,7 +140,7 @@ namespace CadastroDePessoas.API.Controllers
         public async Task<ActionResult<object>> AlterarSenha([FromBody] AlterarSenhaDTO dto)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
-            
+
             if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var userGuid))
             {
                 return BadRequest(new { message = "Token inválido" });
@@ -149,7 +149,7 @@ namespace CadastroDePessoas.API.Controllers
             try
             {
                 var usuario = await dbContext.Usuarios.FindAsync(userGuid);
-                
+
                 if (usuario == null)
                 {
                     return NotFound(new { message = "Usuário não encontrado" });
@@ -171,7 +171,7 @@ namespace CadastroDePessoas.API.Controllers
                 }
 
                 usuario.AlterarSenha(BC.HashPassword(dto.NovaSenha, 12));
-                
+
                 await dbContext.SaveChangesAsync();
 
                 return Ok(new
@@ -184,6 +184,26 @@ namespace CadastroDePessoas.API.Controllers
             {
                 return StatusCode(500, new { message = $"Erro interno do servidor: {ex.Message}" });
             }
+        }
+
+        [HttpGet("verificar-token")]
+        [Authorize]
+        public ActionResult VerificarToken()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
+            var email = User.FindFirst(ClaimTypes.Email)?.Value ?? User.FindFirst("email")?.Value;
+            var name = User.FindFirst(ClaimTypes.Name)?.Value ?? User.FindFirst("name")?.Value;
+
+            return Ok(new
+            {
+                valid = true,
+                user = new
+                {
+                    id = userId,
+                    email,
+                    name
+                }
+            });
         }
     }
 }

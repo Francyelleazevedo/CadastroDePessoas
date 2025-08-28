@@ -21,7 +21,7 @@ namespace CadastroDePessoas.Infra.Repositorios
         {
             return await _dbSet
                 .Include(p => p.Endereco)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception("Pessoa não encontrada");
         }
 
         public override async Task<IEnumerable<Pessoa>> ListarAsync()
@@ -41,7 +41,9 @@ namespace CadastroDePessoas.Infra.Repositorios
 
         public async Task AtualizarPessoaComEnderecoAsync(Pessoa entidade)
         {
+            // Busca a pessoa existente sem tracking
             var pessoaExistente = await _contexto.Pessoas
+                .AsNoTracking()
                 .Include(p => p.Endereco)
                 .FirstOrDefaultAsync(p => p.Id == entidade.Id);
 
@@ -50,10 +52,25 @@ namespace CadastroDePessoas.Infra.Repositorios
                 throw new Exception($"Pessoa não encontrada para atualização");
             }
 
-            _contexto.Entry(pessoaExistente).State = EntityState.Detached;
+            // Limpa o tracking do contexto para evitar conflitos
+            _contexto.ChangeTracker.Clear();
 
+            // Se existe um endereço na base e estamos enviando um endereço
+            if (pessoaExistente.Endereco != null && entidade.Endereco != null)
+            {
+                // Preserva o ID do endereço existente
+                var enderecoId = pessoaExistente.Endereco.Id;
+                
+                // Usa reflection para definir o ID no novo endereço
+                var idProperty = typeof(Endereco).GetProperty("Id");
+                if (idProperty != null)
+                {
+                    idProperty.SetValue(entidade.Endereco, enderecoId);
+                }
+            }
+
+            // Atualiza a entidade
             _contexto.Update(entidade);
-
             await _contexto.SaveChangesAsync();
         }
     }

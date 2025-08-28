@@ -262,18 +262,6 @@ export default function DetalharPessoa() {
                                                     </Text>
                                                 </Box>
                                             </HStack>
-
-                                            <HStack spacing={4}>
-                                                <FaPhone color="gray" />
-                                                <Box>
-                                                    <Text fontSize="sm" color="gray.500" fontWeight="medium">
-                                                        Telefone
-                                                    </Text>
-                                                    <Text>
-                                                        {pessoa?.Telefone || 'N/A'}
-                                                    </Text>
-                                                </Box>
-                                            </HStack>
                                         </VStack>
                                     </CardBody>
                                 </Card>
@@ -354,7 +342,7 @@ export default function DetalharPessoa() {
                                                             CEP
                                                         </Text>
                                                         <Text fontFamily="mono">
-                                                            {pessoa.Endereco.Cep ? formatCEP(pessoa.Endereco.Cep) : 'N/A'}
+                                                            {pessoa.Endereco.Cep ? formatarCEP(pessoa.Endereco.Cep) : 'N/A'}
                                                         </Text>
                                                     </Box>
                                                 </VStack>

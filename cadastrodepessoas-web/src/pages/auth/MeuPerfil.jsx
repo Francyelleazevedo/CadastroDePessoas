@@ -233,18 +233,6 @@ export default function MeuPerfil() {
                                                     {formatarData(usuario?.DataCadastro)}
                                                 </Text>
                                             </VStack>
-
-                                            <VStack align="start" spacing={3}>
-                                                <HStack>
-                                                    <Box color="gray.500">
-                                                        <FaUser />
-                                                    </Box>
-                                                    <Text fontWeight="medium">ID do Usuário</Text>
-                                                </HStack>
-                                                <Text pl={6} color="gray.600" fontSize="sm" fontFamily="mono">
-                                                    {usuario?.Id}
-                                                </Text>
-                                            </VStack>
                                         </SimpleGrid>
                                     </VStack>
                                 </CardBody>

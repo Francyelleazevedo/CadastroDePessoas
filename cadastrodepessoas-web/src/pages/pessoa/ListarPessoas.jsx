@@ -186,15 +186,6 @@ export default function ListarPessoas() {
                                                 : 'Nenhuma pessoa encontrada com os filtros aplicados'
                                             }
                                         </Text>
-                                        {pessoas.length === 0 && (
-                                            <Button
-                                                leftIcon={<FaPlus />}
-                                                colorScheme="blue"
-                                                onClick={() => navigate('/pessoas/criar')}
-                                            >
-                                                Cadastrar Pessoa
-                                            </Button>
-                                        )}
                                     </VStack>
                                 </Flex>
                             ) : (

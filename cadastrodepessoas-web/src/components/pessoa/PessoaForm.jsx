@@ -2,43 +2,28 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-    Box,
-    VStack,
-    HStack,
-    FormControl,
-    FormLabel,
-    Input,
-    Select,
-    Button,
-    Card,
-    CardHeader,
-    CardBody,
-    Heading,
-    Divider,
-    FormErrorMessage,
-    SimpleGrid,
+    Box, VStack, HStack, FormControl, FormLabel, Input, Select, Button,
+    Card, CardHeader, CardBody, Heading, Divider, FormErrorMessage, SimpleGrid,
 } from '@chakra-ui/react';
 import {
-    FaSave,
-    FaUser,
-    FaEnvelope,
-    FaCalendarAlt,
-    FaVenusMars,
-    FaIdCard,
-    FaGlobe,
-    FaMapMarkerAlt,
-    FaHome,
-    FaRoad,
-    FaBuilding,
-    FaCity,
-    FaMapPin,
+    FaSave, FaUser, FaEnvelope, FaCalendarAlt, FaVenusMars, FaIdCard,
+    FaGlobe, FaMapMarkerAlt, FaHome, FaRoad, FaBuilding, FaCity, FaMapPin,
 } from 'react-icons/fa';
 import * as yup from 'yup';
 import { validarCPF, validarEmail } from '../../utils/validators';
 import { maskCPF, maskCEP, unMask } from '../../utils/masks';
 import { useNotification } from '../../hooks/useNotification';
 
-// Schema Yup definido localmente, usando utilitários do projeto
+const enderecoSchema = yup.object().shape({
+    cep: yup.string().nullable(),
+    logradouro: yup.string().nullable(),
+    numero: yup.string().nullable(),
+    complemento: yup.string().nullable(),
+    bairro: yup.string().nullable(),
+    cidade: yup.string().nullable(),
+    estado: yup.string().nullable(),
+});
+
 const pessoaSchema = yup.object().shape({
     nome: yup.string().required('Nome é obrigatório'),
     sexo: yup.string().oneOf(['', '0', '1', '2'], 'Sexo inválido'),
@@ -64,62 +49,48 @@ const pessoaSchema = yup.object().shape({
         .string()
         .required('CPF é obrigatório')
         .test('is-cpf', 'CPF inválido', (value) => validarCPF(value)),
-    endereco: yup.object().shape({
-        cep: yup.string().nullable(),
-        logradouro: yup.string().nullable(),
-        numero: yup.string().nullable(),
-        complemento: yup.string().nullable(),
-        bairro: yup.string().nullable(),
-        cidade: yup.string().nullable(),
-        estado: yup.string().nullable(),
-    }),
+    endereco: enderecoSchema,
 });
 
-export default function PessoaForm({ 
-    initialData = null, 
-    onSubmit, 
-    onCancel, 
+export default function PessoaForm({
+    initialData = null,
+    onSubmit,
+    onCancel,
     isLoading = false,
     submitButtonText = "Salvar Pessoa",
-    title = "Dados Pessoais" 
+    title = "Dados Pessoais"
 }) {
     const { showError } = useNotification();
 
-    const formatarDataParaInput = (dataISO) => {
-        if (!dataISO) return '';
-        
+    const formatDateForInput = (dateISO) => {
+        if (!dateISO) return '';
+
         try {
-            if (typeof dataISO === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dataISO)) {
-                return dataISO;
+            if (typeof dateISO === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateISO)) {
+                return dateISO;
             }
-            
-            if (typeof dataISO === 'string' && dataISO.includes('T')) {
-                const dataFormatada = dataISO.split('T')[0];
-                return dataFormatada;
+
+            if (typeof dateISO === 'string' && dateISO.includes('T')) {
+                return dateISO.split('T')[0];
             }
-            
-            const data = new Date(dataISO);
-            
-            if (isNaN(data.getTime())) {
-                return '';
-            }
-            
-            const ano = data.getFullYear();
-            const mes = String(data.getMonth() + 1).padStart(2, '0');
-            const dia = String(data.getDate()).padStart(2, '0');
-            
-            const dataFormatada = `${ano}-${mes}-${dia}`;
-            
-            return dataFormatada;
+
+            const date = new Date(dateISO);
+            if (isNaN(date.getTime())) return '';
+
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+
+            return `${year}-${month}-${day}`;
         } catch (error) {
             return '';
         }
     };
 
-    const defaultValues = {
+    const getDefaultValues = () => ({
         nome: initialData?.Nome || '',
         email: initialData?.Email || '',
-        dataNascimento: formatarDataParaInput(initialData?.DataNascimento),
+        dataNascimento: formatDateForInput(initialData?.DataNascimento),
         sexo: initialData?.Sexo?.toString() || '',
         cpf: initialData?.Cpf || '',
         naturalidade: initialData?.Naturalidade || '',
@@ -133,7 +104,31 @@ export default function PessoaForm({
             cidade: initialData?.Endereco?.Cidade || '',
             estado: initialData?.Endereco?.Estado || '',
         },
+    });
+
+    const cleanString = (str) => str && str.trim() !== '' ? str.trim() : '';
+
+    const hasAddressData = (endereco) => {
+        return endereco && (
+            cleanString(endereco.cep) ||
+            cleanString(endereco.logradouro) ||
+            cleanString(endereco.numero) ||
+            cleanString(endereco.complemento) ||
+            cleanString(endereco.bairro) ||
+            cleanString(endereco.cidade) ||
+            cleanString(endereco.estado)
+        );
     };
+
+    const buildAddressData = (endereco) => ({
+        CEP: endereco?.cep ? maskCEP(unMask(endereco.cep)) : '',
+        Logradouro: cleanString(endereco?.logradouro) || '',
+        Numero: cleanString(endereco?.numero) || '',
+        Complemento: cleanString(endereco?.complemento) || '',
+        Bairro: cleanString(endereco?.bairro) || '',
+        Cidade: cleanString(endereco?.cidade) || '',
+        Estado: cleanString(endereco?.estado)?.toUpperCase() || '',
+    });
 
     const {
         register,
@@ -145,37 +140,21 @@ export default function PessoaForm({
     } = useForm({
         resolver: yupResolver(pessoaSchema),
         mode: 'onChange',
-        defaultValues,
+        defaultValues: getDefaultValues(),
     });
+
+    const cpfValue = watch('cpf');
+    const cepValue = watch('endereco.cep');
 
     React.useEffect(() => {
         if (initialData) {
-            const dataFormatada = formatarDataParaInput(initialData?.DataNascimento);
-            
             const newValues = {
-                nome: initialData?.Nome || '',
-                email: initialData?.Email || '',
-                dataNascimento: dataFormatada,
-                sexo: initialData?.Sexo?.toString() || '',
-                cpf: initialData?.Cpf || '',
-                naturalidade: initialData?.Naturalidade || '',
-                nacionalidade: initialData?.Nacionalidade || '',
-                endereco: {
-                    cep: initialData?.Endereco?.Cep || '',
-                    logradouro: initialData?.Endereco?.Logradouro || '',
-                    numero: initialData?.Endereco?.Numero || '',
-                    complemento: initialData?.Endereco?.Complemento || '',
-                    bairro: initialData?.Endereco?.Bairro || '',
-                    cidade: initialData?.Endereco?.Cidade || '',
-                    estado: initialData?.Endereco?.Estado || '',
-                },
+                ...getDefaultValues(),
+                dataNascimento: formatDateForInput(initialData?.DataNascimento),
             };
             reset(newValues);
         }
     }, [initialData, reset]);
-
-    const cpfValue = watch('cpf');
-    const cepValue = watch('endereco.cep');
 
     React.useEffect(() => {
         if (cpfValue) {
@@ -197,57 +176,60 @@ export default function PessoaForm({
 
     const handleFormSubmit = async (data) => {
         try {
-            const cleanString = (str) => str && str.trim() !== '' ? str.trim() : '';
-            
             const pessoaData = {
                 Nome: cleanString(data.nome),
                 Email: cleanString(data.email),
                 DataNascimento: data.dataNascimento,
                 Sexo: data.sexo ? parseInt(data.sexo) : 0,
-                Cpf: data.cpf ? unMask(data.cpf) : '',
+                CPF: data.cpf ? maskCPF(unMask(data.cpf)) : '',
                 Naturalidade: cleanString(data.naturalidade),
                 Nacionalidade: cleanString(data.nacionalidade),
             };
-
-            const endereco = data.endereco;
-            const temEndereco = endereco && (
-                cleanString(endereco.cep) ||
-                cleanString(endereco.logradouro) ||
-                cleanString(endereco.numero) ||
-                cleanString(endereco.complemento) ||
-                cleanString(endereco.bairro) ||
-                cleanString(endereco.cidade) ||
-                cleanString(endereco.estado)
-            );
-
-            if (temEndereco) {
-                pessoaData.Endereco = {
-                    Cep: endereco.cep ? unMask(endereco.cep) : '',
-                    Logradouro: cleanString(endereco.logradouro),
-                    Numero: cleanString(endereco.numero),
-                    Complemento: cleanString(endereco.complemento),
-                    Bairro: cleanString(endereco.bairro),
-                    Cidade: cleanString(endereco.cidade),
-                    Estado: cleanString(endereco.estado)?.toUpperCase() || '',
-                };
-            }
 
             if (initialData?.Id) {
                 pessoaData.Id = initialData.Id;
             }
 
+            const endereco = data.endereco;
+            const temEndereco = hasAddressData(endereco);
+
+            if (!initialData?.Id) {
+                pessoaData.Endereco = {
+                    Id: null,
+                    ...buildAddressData(endereco),
+                };
+            } else if (temEndereco) {
+                pessoaData.Endereco = buildAddressData(endereco);
+
+                if (initialData?.Endereco?.Id) {
+                    pessoaData.Endereco.Id = initialData.Endereco.Id;
+                }
+            }
+
             await onSubmit(pessoaData);
         } catch (error) {
             let errorMessage = 'Não foi possível processar a solicitação. Tente novamente.';
+
             if (error.response?.data?.message) {
                 errorMessage = error.response.data.message;
             } else if (error.response?.data?.errors) {
                 errorMessage = Object.values(error.response.data.errors).flat().join(', ');
             }
-            
+
             showError(errorMessage);
         }
     };
+
+    const FormField = ({ icon: Icon, label, children, error, required = false }) => (
+        <FormControl isInvalid={!!error}>
+            <FormLabel display="flex" alignItems="center">
+                <Box as={Icon} mr={2} color="gray.500" />
+                {label} {required && '*'}
+            </FormLabel>
+            {children}
+            <FormErrorMessage>{error?.message}</FormErrorMessage>
+        </FormControl>
+    );
 
     return (
         <Card shadow="md">
@@ -260,74 +242,42 @@ export default function PessoaForm({
             <CardBody>
                 <form onSubmit={handleSubmit(handleFormSubmit)}>
                     <VStack spacing={6} align="stretch">
-                        <FormControl isInvalid={!!errors.nome}>
-                            <FormLabel display="flex" alignItems="center">
-                                <Box as={FaUser} mr={2} color="gray.500" />
-                                Nome Completo *
-                            </FormLabel>
+                        <FormField icon={FaUser} label="Nome Completo" error={errors.nome} required>
                             <Input
                                 {...register('nome')}
                                 placeholder="Digite o nome completo"
                                 size="lg"
                             />
-                            <FormErrorMessage>
-                                {errors.nome?.message}
-                            </FormErrorMessage>
-                        </FormControl>
+                        </FormField>
 
-                        <FormControl isInvalid={!!errors.cpf}>
-                            <FormLabel display="flex" alignItems="center">
-                                <Box as={FaIdCard} mr={2} color="gray.500" />
-                                CPF *
-                            </FormLabel>
+                        <FormField icon={FaIdCard} label="CPF" error={errors.cpf} required>
                             <Input
                                 {...register('cpf')}
                                 placeholder="000.000.000-00"
                                 size="lg"
                                 maxLength={14}
                             />
-                            <FormErrorMessage>
-                                {errors.cpf?.message}
-                            </FormErrorMessage>
-                        </FormControl>
+                        </FormField>
 
-                        <FormControl isInvalid={!!errors.email}>
-                            <FormLabel display="flex" alignItems="center">
-                                <Box as={FaEnvelope} mr={2} color="gray.500" />
-                                Email
-                            </FormLabel>
+                        <FormField icon={FaEnvelope} label="Email" error={errors.email}>
                             <Input
                                 {...register('email')}
                                 type="email"
                                 placeholder="Digite o email"
                                 size="lg"
                             />
-                            <FormErrorMessage>
-                                {errors.email?.message}
-                            </FormErrorMessage>
-                        </FormControl>
+                        </FormField>
 
                         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-                            <FormControl isInvalid={!!errors.dataNascimento}>
-                                <FormLabel display="flex" alignItems="center">
-                                    <Box as={FaCalendarAlt} mr={2} color="gray.500" />
-                                    Data de Nascimento *
-                                </FormLabel>
+                            <FormField icon={FaCalendarAlt} label="Data de Nascimento" error={errors.dataNascimento} required>
                                 <Input
                                     {...register('dataNascimento')}
                                     type="date"
                                     size="lg"
                                 />
-                                <FormErrorMessage>
-                                    {errors.dataNascimento?.message}
-                                </FormErrorMessage>
-                            </FormControl>
+                            </FormField>
 
-                            <FormControl isInvalid={!!errors.sexo}>
-                                <FormLabel display="flex" alignItems="center">
-                                    <Box as={FaVenusMars} mr={2} color="gray.500" />
-                                    Sexo
-                                </FormLabel>
+                            <FormField icon={FaVenusMars} label="Sexo" error={errors.sexo}>
                                 <Select
                                     {...register('sexo')}
                                     placeholder="Selecione o sexo"
@@ -337,46 +287,28 @@ export default function PessoaForm({
                                     <option value="2">Feminino</option>
                                     <option value="0">Não informado</option>
                                 </Select>
-                                <FormErrorMessage>
-                                    {errors.sexo?.message}
-                                </FormErrorMessage>
-                            </FormControl>
+                            </FormField>
                         </SimpleGrid>
 
                         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-                            <FormControl isInvalid={!!errors.naturalidade}>
-                                <FormLabel display="flex" alignItems="center">
-                                    <Box as={FaMapMarkerAlt} mr={2} color="gray.500" />
-                                    Naturalidade
-                                </FormLabel>
+                            <FormField icon={FaMapMarkerAlt} label="Naturalidade" error={errors.naturalidade}>
                                 <Input
                                     {...register('naturalidade')}
                                     placeholder="Ex: São Paulo"
                                     size="lg"
                                 />
-                                <FormErrorMessage>
-                                    {errors.naturalidade?.message}
-                                </FormErrorMessage>
-                            </FormControl>
+                            </FormField>
 
-                            <FormControl isInvalid={!!errors.nacionalidade}>
-                                <FormLabel display="flex" alignItems="center">
-                                    <Box as={FaGlobe} mr={2} color="gray.500" />
-                                    Nacionalidade
-                                </FormLabel>
+                            <FormField icon={FaGlobe} label="Nacionalidade" error={errors.nacionalidade}>
                                 <Input
                                     {...register('nacionalidade')}
                                     placeholder="Ex: Brasileira"
                                     size="lg"
                                 />
-                                <FormErrorMessage>
-                                    {errors.nacionalidade?.message}
-                                </FormErrorMessage>
-                            </FormControl>
+                            </FormField>
                         </SimpleGrid>
 
                         <Divider />
-
                         <Box>
                             <Heading size="sm" display="flex" alignItems="center" mb={4}>
                                 <Box as={FaHome} mr={2} color="gray.500" />
@@ -384,52 +316,31 @@ export default function PessoaForm({
                             </Heading>
 
                             <VStack spacing={4} align="stretch">
-                                <FormControl isInvalid={!!errors.endereco?.cep}>
-                                    <FormLabel display="flex" alignItems="center">
-                                        <Box as={FaMapPin} mr={2} color="gray.500" />
-                                        CEP
-                                    </FormLabel>
+                                <FormField icon={FaMapPin} label="CEP" error={errors.endereco?.cep}>
                                     <Input
                                         {...register('endereco.cep')}
                                         placeholder="00000-000"
                                         size="lg"
                                         maxLength={9}
                                     />
-                                    <FormErrorMessage>
-                                        {errors.endereco?.cep?.message}
-                                    </FormErrorMessage>
-                                </FormControl>
+                                </FormField>
 
-                                <FormControl isInvalid={!!errors.endereco?.logradouro}>
-                                    <FormLabel display="flex" alignItems="center">
-                                        <Box as={FaRoad} mr={2} color="gray.500" />
-                                        Logradouro
-                                    </FormLabel>
+                                <FormField icon={FaRoad} label="Logradouro" error={errors.endereco?.logradouro}>
                                     <Input
                                         {...register('endereco.logradouro')}
                                         placeholder="Ex: Rua das Flores"
                                         size="lg"
                                     />
-                                    <FormErrorMessage>
-                                        {errors.endereco?.logradouro?.message}
-                                    </FormErrorMessage>
-                                </FormControl>
+                                </FormField>
 
                                 <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-                                    <FormControl isInvalid={!!errors.endereco?.numero}>
-                                        <FormLabel display="flex" alignItems="center">
-                                            <Box as={FaBuilding} mr={2} color="gray.500" />
-                                            Número
-                                        </FormLabel>
+                                    <FormField icon={FaBuilding} label="Número" error={errors.endereco?.numero}>
                                         <Input
                                             {...register('endereco.numero')}
                                             placeholder="123"
                                             size="lg"
                                         />
-                                        <FormErrorMessage>
-                                            {errors.endereco?.numero?.message}
-                                        </FormErrorMessage>
-                                    </FormControl>
+                                    </FormField>
 
                                     <FormControl isInvalid={!!errors.endereco?.complemento}>
                                         <FormLabel>Complemento</FormLabel>
@@ -443,37 +354,23 @@ export default function PessoaForm({
                                         </FormErrorMessage>
                                     </FormControl>
 
-                                    <FormControl isInvalid={!!errors.endereco?.bairro}>
-                                        <FormLabel display="flex" alignItems="center">
-                                            <Box as={FaMapMarkerAlt} mr={2} color="gray.500" />
-                                            Bairro
-                                        </FormLabel>
+                                    <FormField icon={FaMapMarkerAlt} label="Bairro" error={errors.endereco?.bairro}>
                                         <Input
                                             {...register('endereco.bairro')}
                                             placeholder="Centro"
                                             size="lg"
                                         />
-                                        <FormErrorMessage>
-                                            {errors.endereco?.bairro?.message}
-                                        </FormErrorMessage>
-                                    </FormControl>
+                                    </FormField>
                                 </SimpleGrid>
 
                                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-                                    <FormControl isInvalid={!!errors.endereco?.cidade}>
-                                        <FormLabel display="flex" alignItems="center">
-                                            <Box as={FaCity} mr={2} color="gray.500" />
-                                            Cidade
-                                        </FormLabel>
+                                    <FormField icon={FaCity} label="Cidade" error={errors.endereco?.cidade}>
                                         <Input
                                             {...register('endereco.cidade')}
                                             placeholder="São Paulo"
                                             size="lg"
                                         />
-                                        <FormErrorMessage>
-                                            {errors.endereco?.cidade?.message}
-                                        </FormErrorMessage>
-                                    </FormControl>
+                                    </FormField>
 
                                     <FormControl isInvalid={!!errors.endereco?.estado}>
                                         <FormLabel>Estado (UF)</FormLabel>
@@ -493,7 +390,6 @@ export default function PessoaForm({
                         </Box>
 
                         <Divider />
-
                         <HStack justify="flex-end" spacing={4}>
                             <Button
                                 variant="outline"

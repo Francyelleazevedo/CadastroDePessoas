@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CadastroDePessoas.Application.CQRS.Comandos.Pessoa.AtualizarPessoa
 {
-    public class AtualizarPessoaComando : IRequest<PessoaDTO>
+      public class AtualizarPessoaComando : IRequest<PessoaDTO>
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
@@ -28,7 +28,6 @@ namespace CadastroDePessoas.Application.CQRS.Comandos.Pessoa.AtualizarPessoa
                 DataNascimento = DataNascimento,
                 Naturalidade = Naturalidade,
                 Nacionalidade = Nacionalidade,
-                Cpf = Cpf,  
                 Endereco = Endereco?.ParaDTO()
             };
         }
@@ -44,7 +43,7 @@ namespace CadastroDePessoas.Application.CQRS.Comandos.Pessoa.AtualizarPessoa
         public string Cidade { get; set; }
         public string Estado { get; set; }
 
-       public CriarEnderecoDTO ParaDTO()
+        public CriarEnderecoDTO ParaDTO()
         {
             return new CriarEnderecoDTO
             {

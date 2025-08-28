@@ -33,14 +33,10 @@ export const pessoaService = {
 
     atualizar: async (pessoa) => {
         try {
-            const payload = {
-                ...pessoa,
-                id: pessoa.id
-            };
-            const response = await api.put(resolveApiPath('Pessoa'), payload);
+            const response = await api.put(resolveApiPath('Pessoa'), pessoa);
             return response.data;
         } catch (error) {
-            console.error(`Erro ao atualizar pessoa com ID ${pessoa.id}:`, error);
+            console.error(`Erro ao atualizar pessoa com ID ${pessoa.Id || pessoa.id}:`, error);
             throw error;
         }
     },
