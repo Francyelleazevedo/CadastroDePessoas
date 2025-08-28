@@ -33,7 +33,7 @@ namespace CadastroDePessoas.Domain.Entidades
 
         protected Pessoa() { }
 
-        public void Atualizar(string nome, Sexo? sexo, string email, DateTime dataNascimento, string naturalidade, string nacionalidade, string telefone = null)
+        public void Atualizar(string nome, Sexo? sexo, string email, DateTime dataNascimento, string naturalidade, string nacionalidade)
         {
             Nome = nome;
             Sexo = sexo;
